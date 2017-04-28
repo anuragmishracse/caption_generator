@@ -31,7 +31,7 @@ class CaptionGenerator():
         self.total_samples=0
         for text in caps:
             self.total_samples+=len(text.split())-1
-        print self.total_samples
+        print "Total samples : "+str(self.total_samples)
         words = [txt.split() for txt in caps]
         unique = []
         for word in words:
@@ -46,31 +46,33 @@ class CaptionGenerator():
             self.index_word[i]=word
 
         max_len = 0
-        for i in caps:
-            if(len(i) > max_len):
-                max_len = len(i)
+        for caption in caps:
+            if(len(caption.split()) > max_len):
+                max_len = len(caption.split())
         self.max_cap_len = max_len
         print "Variables initialization done!"
 
 
-    def data_generator(self, batch_size = 100000):
-        while 1:
-            print "Generating data..."
-            df = pd.read_csv('Flickr8k_text/flickr_8k_train_dataset.txt', delimiter='\t')
-            nb_samples = df.shape[0]
-            iter = df.iterrows()
-            caps = []
-            imgs = []
-            for i in range(nb_samples):
-                x = iter.next()
-                caps.append(x[1][1])
-                imgs.append('Flicker8k_Dataset/' + x[1][0])
+    def data_generator(self, batch_size = 32):
+        partial_caps = []
+        next_words = []
+        images = []
+        print "Generating data..."
+        gen_count = 0
+        df = pd.read_csv('Flickr8k_text/flickr_8k_train_dataset.txt', delimiter='\t')
+        nb_samples = df.shape[0]
+        iter = df.iterrows()
+        caps = []
+        imgs = []
+        for i in range(nb_samples):
+            x = iter.next()
+            caps.append(x[1][1])
+            imgs.append('Flicker8k_Dataset/' + x[1][0])
 
-            partial_caps = []
-            next_words = []
-            images = []
+
+        total_count = 0
+        while 1:
             image_counter = -1
-            total_count = 0
             for text in caps:
                 image_counter+=1
                 current_image = self.load_image(imgs[image_counter])
@@ -88,21 +90,12 @@ class CaptionGenerator():
                         images = np.asarray(images)
                         partial_caps = sequence.pad_sequences(partial_caps, maxlen=self.max_cap_len, padding='post')
                         total_count = 0
-                        print "yielding of size " +str(len(images))
+                        gen_count+=1
+                        print "yielding count: "+str(gen_count)
                         yield [[images, partial_caps], next_words]
                         partial_caps = []
                         next_words = []
                         images = []
-            if len(images) > 0:
-                next_words = np.asarray(next_words)
-                images = np.asarray(images)
-                partial_caps = sequence.pad_sequences(partial_caps, maxlen=self.max_cap_len, padding='post')
-                total_count = 0
-                print "yielding of last size " +str(len(images))
-                yield [[images, partial_caps], next_words]
-                partial_caps = []
-                next_words = []
-                images = []
         
     def load_image(self, path):
         img = image.load_img(path, target_size=(224,224))

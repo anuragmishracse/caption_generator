@@ -45,6 +45,6 @@ def prepare_dataset(no_imgs = -1):
 	return [c_train, c_test]
 
 if __name__ == '__main__':
-	c_train, c_test = prepare_dataset(1)
+	c_train, c_test = prepare_dataset(5)
 	print "Training samples = "+str(c_train)
 	print "Test samples = "+str(c_test)

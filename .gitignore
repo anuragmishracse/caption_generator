@@ -5,3 +5,6 @@
 *.hdf5
 *.jpeg
 *.h5
+.ipynb_checkpoints/*
+.ipynb_checkpoints/
+*.ipynb
