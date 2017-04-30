@@ -162,7 +162,7 @@ def VGG16(include_top=True, weights='imagenet',
         if include_top:
             weights_path = get_file('vgg16_weights_tf_dim_ordering_tf_kernels.h5',
                                     WEIGHTS_PATH,
-                                    cache_subdir='models')
+                                   )
         else:
             weights_path = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5',
                                     WEIGHTS_PATH_NO_TOP,
@@ -187,6 +187,9 @@ def VGG16(include_top=True, weights='imagenet',
                               '`image_data_format="channels_last"` in '
                               'your Keras config '
                               'at ~/.keras/keras.json.')
+    model.layers.pop() # Get rid of the classification layer
+    model.outputs = [model.layers[-1].output]
+    model.layers[-1].outbound_nodes = []
     return model
 
 

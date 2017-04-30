@@ -6,8 +6,10 @@ from keras.models import Sequential
 from keras.layers import LSTM, Embedding, TimeDistributed, Dense, RepeatVector, Merge, Activation, Flatten
 from keras.preprocessing import image, sequence
 from keras.callbacks import ModelCheckpoint
+import cPickle as pickle
 
 EMBEDDING_DIM = 128
+
 
 class CaptionGenerator():
 
@@ -17,6 +19,7 @@ class CaptionGenerator():
         self.index_word = None
         self.word_index = None
         self.total_samples = None
+        self.encoded_images = pickle.load( open( "encoded_images.p", "rb" ) )
         self.variable_initializer()
 
     def variable_initializer(self):
@@ -67,7 +70,7 @@ class CaptionGenerator():
         for i in range(nb_samples):
             x = iter.next()
             caps.append(x[1][1])
-            imgs.append('Flicker8k_Dataset/' + x[1][0])
+            imgs.append(x[1][0])
 
 
         total_count = 0
@@ -75,7 +78,7 @@ class CaptionGenerator():
             image_counter = -1
             for text in caps:
                 image_counter+=1
-                current_image = self.load_image(imgs[image_counter])
+                current_image = self.encoded_images[imgs[image_counter]]
                 for i in range(len(text.split())-1):
                     total_count+=1
                     partial = [self.word_index[txt] for txt in text.split()[:i+1]]
@@ -104,12 +107,12 @@ class CaptionGenerator():
 
 
     def create_model(self, ret_model = False):
-        base_model = VGG16(weights='imagenet', include_top=False, input_shape = (224, 224, 3))
-        base_model.trainable=False
+        #base_model = VGG16(weights='imagenet', include_top=False, input_shape = (224, 224, 3))
+        #base_model.trainable=False
         image_model = Sequential()
-        image_model.add(base_model)
-        image_model.add(Flatten())
-        image_model.add(Dense(EMBEDDING_DIM, activation='relu'))
+        #image_model.add(base_model)
+        #image_model.add(Flatten())
+        image_model.add(Dense(EMBEDDING_DIM, input_dim = 4096, activation='relu'))
 
         image_model.add(RepeatVector(self.max_cap_len))
 
