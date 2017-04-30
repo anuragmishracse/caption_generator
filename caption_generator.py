@@ -35,6 +35,7 @@ class CaptionGenerator():
         for text in caps:
             self.total_samples+=len(text.split())-1
         print "Total samples : "+str(self.total_samples)
+        
         words = [txt.split() for txt in caps]
         unique = []
         for word in words:
@@ -53,6 +54,8 @@ class CaptionGenerator():
             if(len(caption.split()) > max_len):
                 max_len = len(caption.split())
         self.max_cap_len = max_len
+        print "Vocabulary size: "+str(self.vocab_size)
+        print "Maximum caption length: "+str(self.max_cap_len)
         print "Variables initialization done!"
 
 

@@ -2,6 +2,7 @@ import cPickle as pickle
 import caption_generator
 import numpy as np
 from keras.preprocessing import sequence
+import nltk
 
 cg = caption_generator.CaptionGenerator()
 
@@ -55,6 +56,52 @@ def test_model(weight, img_name, beam_size = 3):
 	return process_caption(get_best_caption(captions))
 	#return [process_caption(caption[0]) for caption in get_all_captions(captions)] 
 
+def bleu_score(hypotheses, references):
+	return nltk.translate.bleu_score.corpus_bleu(references, hypotheses)
+
+def test_model_on_images(weight, img_dir, beam_size = 3):
+	imgs = []
+	captions = {}
+	with open(img_dir, 'rb') as f_images:
+		imgs = f_images.read().split('\n')
+	encoded_images = pickle.load( open( "encoded_images.p", "rb" ) )
+	model = cg.create_model(ret_model = True)
+	model.load_weights(weight)
+
+	for count, img_name in enumerate(imgs):
+		print "Predicting for image: "+str(count)
+		image = encoded_images[img_name]
+		image_captions = generate_captions(model, image, beam_size)
+		best_caption = process_caption(get_best_caption(image_captions))
+		captions[img_name] = best_caption
+		print img_name+" : "+str(best_caption)
+	image_captions_pair = {}
+	
+	f_captions = open('Flickr8k_text/Flickr8k.token.txt', 'rb')
+	captions = f_captions.read().strip().split('\n')
+	image_captions_pair = {}
+	for row in captions:
+		row = row.split("\t")
+		row[0] = row[0][:len(row[0])-2]
+		try:
+			image_captions_pair[row[0]].append(row[1])
+		except:
+			image_captions_pair[row[0]] = [row[1]]
+	f_captions.close()
+	
+	hypotheses=[]
+	references = []
+	for img_name in imgs:
+		hypothesis = captions[img_name]
+		reference = image_captions_pair[img_name]
+		hypotheses.append(hypothesis)
+		references.append(reference)
+
+	return bleu_score(hypotheses, references)
 
 if __name__ == '__main__':
-	print test_model('weights-improvement-49.hdf5', '950411653_20d0335946.jpg')
+	weight = 'weights-improvement-48.hdf5'
+	test_image = '3155451946_c0862c70cb.jpg'
+	test_img_dir = 'Flickr8k_text/Flickr_8k.testImages.txt'
+	#print test_model(weight, test_image)
+	print test_model_on_images(weight, test_img_dir, beam_size=3)
