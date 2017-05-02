@@ -9,8 +9,11 @@ cg = caption_generator.CaptionGenerator()
 def process_caption(caption):
 	caption_split = caption.split()
 	processed_caption = caption_split[1:]
-	end_index = processed_caption.index('<end>')
-	processed_caption = processed_caption[:end_index]
+	try:
+		end_index = processed_caption.index('<end>')
+		processed_caption = processed_caption[:end_index]
+	except:
+		pass
 	return " ".join([word for word in processed_caption])
 
 def get_best_caption(captions):
@@ -63,10 +66,12 @@ def test_model_on_images(weight, img_dir, beam_size = 3):
 	imgs = []
 	captions = {}
 	with open(img_dir, 'rb') as f_images:
-		imgs = f_images.read().split('\n')
+		imgs = f_images.read().strip().split('\n')
 	encoded_images = pickle.load( open( "encoded_images.p", "rb" ) )
 	model = cg.create_model(ret_model = True)
 	model.load_weights(weight)
+
+	f_pred_caption = open('predicted_captions.txt', 'wb')
 
 	for count, img_name in enumerate(imgs):
 		print "Predicting for image: "+str(count)
@@ -75,12 +80,14 @@ def test_model_on_images(weight, img_dir, beam_size = 3):
 		best_caption = process_caption(get_best_caption(image_captions))
 		captions[img_name] = best_caption
 		print img_name+" : "+str(best_caption)
-	image_captions_pair = {}
-	
+		f_pred_caption.write(img_name+"\t"+str(best_caption))
+		f_pred_caption.flush()
+	f_pred_caption.close()
+
 	f_captions = open('Flickr8k_text/Flickr8k.token.txt', 'rb')
-	captions = f_captions.read().strip().split('\n')
+	captions_text = f_captions.read().strip().split('\n')
 	image_captions_pair = {}
-	for row in captions:
+	for row in captions_text:
 		row = row.split("\t")
 		row[0] = row[0][:len(row[0])-2]
 		try:
