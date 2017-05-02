@@ -2,6 +2,7 @@
 *.pyc
 *.jpg
 *.txt
+!requirements.txt
 .DS_Store
 *.hdf5
 *.jpeg
