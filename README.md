@@ -23,9 +23,9 @@ This repository serves two purposes:
 
 ## Requirements 
 
-## Scripts description
+## Scripts 
 
-## How to use
+## Usage
 
 ----------------------------------
 
