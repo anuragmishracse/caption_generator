@@ -7,17 +7,27 @@ This repository serves two purposes:
 - present/ discuss my model and results I obtained
 - provide a simple architecture for image captioning to the community
 
+## Model 
+
 <div align="center">
   <img src="vis/model.png"><br><br>
 </div>
 
-_README - Update in progress_
+## Dataset and trained weights
 
+## Generating captions
 
+## Results
 
+----------------------------------
 
+## Requirements 
 
+## Scripts description
 
+## How to use
+
+----------------------------------
 
 ## References 
 [1] Oriol Vinyals, Alexander Toshev, Samy Bengio, Dumitru Erhan. [Show and Tell: A Neural Image Caption Generator](https://arxiv.org/pdf/1411.4555.pdf)
