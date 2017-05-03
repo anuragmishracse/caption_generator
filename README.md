@@ -1,12 +1,15 @@
 # caption_generator: An image captioning project
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/anuragmishracse/caption_generator/blob/master/LICENSE)
 
-A project to generate a caption for any image in natural language i.e. English. The architecture for the model is inspired from [1] by Vinyals et al. The module is built using [keras](https://keras.io/), the deep learning library. 
+To generate a caption for any image in natural language, English. The architecture for the model is inspired from [1] by Vinyals et al. The module is built using [keras](https://keras.io/), the deep learning library. 
 
 This repository serves two purposes:
-- To present/ discuss my model and results
-- To provide a simple architecture for image captioning to the community
+- present/ discuss my model and results I obtained
+- provide a simple architecture for image captioning to the community
 
+<div align="center">
+  <img src="vis/model.png"><br><br>
+</div>
 
 _README - Update in progress_
 
