@@ -10,12 +10,13 @@ This repository serves two purposes:
 ## Model 
 
 The Image captioning model has been implemented using the Sequential API of keras. It consists of two parts:
-- *An encoder CNN model*: A pre-trained CNN is used to encode an image to its features. In this implementation VGG16 model[d] is used as encoder and with its pretrained weights loaded. The last softmax layer of VGG16 is removed and the vector of dimention (4096,) is obtained from the second last layer. 
+- __An encoder CNN model__: A pre-trained CNN is used to encode an image to its features. In this implementation VGG16 model[d] is used as encoder and with its pretrained weights loaded. The last softmax layer of VGG16 is removed and the vector of dimention (4096,) is obtained from the second last layer. 
+
 _To speed up my training, I pre-encoded each image to its feature set. This is done in the `prepare_dataset.py` file to form a resultant pickle file `encoded_images.p`_
 
-- *A word embedding model*:
+- __A word embedding model__:
 
-- *A decoder RNN model*:
+- __A decoder RNN model__:
 
 <div align="center">
   <img src="vis/model.png"><br><br>
