@@ -10,15 +10,15 @@ This repository serves two purposes:
 ## Model 
 
 The Image captioning model has been implemented using the Sequential API of keras. It consists of three components:
-- __An encoder CNN model__: A pre-trained CNN is used to encode an image to its features. In this implementation VGG16 model[d] is used as encoder and with its pretrained weights loaded. The last softmax layer of VGG16 is removed and the vector of dimention (4096,) is obtained from the second last layer. 
+1. __An encoder CNN model__: A pre-trained CNN is used to encode an image to its features. In this implementation VGG16 model[d] is used as encoder and with its pretrained weights loaded. The last softmax layer of VGG16 is removed and the vector of dimention (4096,) is obtained from the second last layer. 
 
 	_To speed up my training, I pre-encoded each image to its feature set. This is done in the `prepare_dataset.py` file to form a resultant pickle file `encoded_images.p`. In the current version, the image model takes the (4096,) dimension encoded image vector as input. This can be overrided by uncommenting the VGG model lines in `caption_generator.py`. There is no fine tuning in the current version but can be implemented._
 
-- __A word embedding model__: Since the number of unique words can be large, a one hot encoding of the words is not a good idea. An embedding model is trained that takes a word and outputs an embedding vector of dimension (1, 128).
+2. __A word embedding model__: Since the number of unique words can be large, a one hot encoding of the words is not a good idea. An embedding model is trained that takes a word and outputs an embedding vector of dimension (1, 128).
 
 	_Pre-trained word embeddings can also be used._
 
-- __A decoder RNN model__:
+3. __A decoder RNN model__: A LSTM network has been employed for the task of generating captions. It takes the image vector and partial captions at the current timestep and input and generated the next most probable word as output. 
 
 The overall architecture of the model is described by the following picture. It also shows the input and output dimension of each layer in the model. 
 
@@ -26,10 +26,16 @@ The overall architecture of the model is described by the following picture. It 
   <img src="vis/model.png"><br><br>
 </div>
 
-## Dataset and trained weights
-The model has been trained and tested on 
+## Dataset
+The model has been trained and tested on Flickr8k dataset[2]. There are many other datasets available that can used as well like:	
+- Flickr30k
+- MS COCO
+- SBU
+- Pascal
 
-## Results
+## Experiments and results
+The model has been trained for 50 epochs which lowers down the loss to _________. With larger dataset, it might be needed to run the model for atleast 50 more epochs. 
+
 
 ----------------------------------
 
