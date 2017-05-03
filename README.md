@@ -34,7 +34,12 @@ The model has been trained and tested on Flickr8k dataset[2]. There are many oth
 - Pascal
 
 ## Experiments and results
-The model has been trained for 50 epochs which lowers down the loss to _________. With larger dataset, it might be needed to run the model for atleast 50 more epochs. 
+The model has been trained for 50 epochs which lowers down the loss to 2.6465. With a larger dataset, it might be needed to run the model for atleast 50 more epochs. 
+
+Some captions generated are as follows:
+<div align="center">
+  <img src="vis/result.png"><br><br>
+</div>
 
 
 ----------------------------------
