@@ -56,7 +56,7 @@ Some captions generated are as follows:
 - Pillow
 
 These requirements can be easily installed by:
-	`pip -r requirements.txt`
+	`pip install -r requirements.txt`
 
 
 ## Scripts 
