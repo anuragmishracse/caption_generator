@@ -2,7 +2,7 @@ import cPickle as pickle
 from keras.preprocessing import image
 from vgg16 import VGG16
 import numpy as np 
-from imagenet_utils import preprocess_input	
+from keras.applications.imagenet_utils import preprocess_input	
 
 counter = 0
 
