@@ -1,5 +1,5 @@
 from vgg16 import VGG16
-from inception_v3 import InceptionV3
+from keras.applications import inception_v3
 import numpy as np
 import pandas as pd
 from keras.models import Sequential
